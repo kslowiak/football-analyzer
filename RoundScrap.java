@@ -71,7 +71,7 @@ public class RoundScrap {
 
             // Zapisujemy wynik do CSV jako dwie osobne kolumny dla gospodarzy i gości
             try {
-                writer.write(round + "," + formattedDate + "," + home + "," + away + "," + homeScore + "," + awayScore + "\n");
+                writer.write(round + ";" + formattedDate + ";" + home + ";" + away + ";" + homeScore + ";" + awayScore + "\n");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -81,7 +81,7 @@ public class RoundScrap {
     // Funkcja zapisująca dane wszystkich rund do pliku CSV
     public static void saveAllRoundsToCSV(int startRound, int endRound, String fileName) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            writer.write("Runda,Data,Gospodarz,Gość,Wynik Gospodarzy,Wynik Gości\n");  // Nagłówki kolumn
+            writer.write("Runda;Data;Gospodarz;Gość;Wynik Gospodarzy;Wynik Gości\n");  // Nagłówki kolumn
             for (int i = startRound; i <= endRound; i++) {
                 System.out.println("Przetwarzam rundę: " + i);
                 fetchRoundData(i, writer);  // Pobieranie i zapisywanie danych dla każdej rundy
