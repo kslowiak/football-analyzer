@@ -9,7 +9,7 @@ On **Windows**, open the football.bat file, or use the following commands:
 > java -cp ".;json-20230227.jar" Main
 
 
-On **Linux**, open the football.bat file, or use the following commands:
+On **Linux**, open the football.sh file, or use the following commands:
 
 > javac -cp ".:json-20230227.jar" Main.java SofaScoreScraper.java Team.java
 >
