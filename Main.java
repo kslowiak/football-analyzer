@@ -1,5 +1,9 @@
 import java.util.List;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class Main {
     public static void main(String[] args) {
         List<Team> total = SofaScoreScraper.fetchTotalStats();
@@ -18,5 +22,14 @@ public class Main {
         //RoundScrap.fetchRoundData(30);
 
         RoundScrap.saveAllRoundsToCSV(1, 34, "1liga_wyniki.csv");
+
+        List<Match> allMatches = new ArrayList<>();
+        for (int i = 1; i <= 34; i++) {
+            List<Match> roundMatches = RoundScrap.fetchRoundMatches(i);
+            allMatches.addAll(roundMatches);
+        }
+        System.out.println("Liczba meczów: " + allMatches.size());
+
+
     }
 }

@@ -29,6 +29,17 @@ public class Match {
     public void SetResult(int t1goals, int t2goals) {
         this.t1goals = t1goals;
         this.t2goals = t2goals;
+        
+        if (t1goals > t2goals) {
+            team1.setWin();
+            team2.setLoss();
+        } else if (t1goals == t2goals) {
+            team1.setDraw();
+            team2.setDraw();
+        } else {
+            team1.setLoss();
+            team2.setWin();
+        }
     }
 
     public int getTeam1Goals() {

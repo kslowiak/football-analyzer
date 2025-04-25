@@ -5,10 +5,71 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class RoundScrap {
+
+
+
+
+    public static List<Match> fetchRoundMatches(int roundNumber) {
+        List<Match> matches = new ArrayList<>();
+        String url = "https://www.sofascore.com/api/v1/unique-tournament/229/season/61452/events/round/" + roundNumber;
+
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder content = new StringBuilder();
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+
+            JSONObject obj = new JSONObject(content.toString());
+            JSONArray events = obj.getJSONArray("events");
+
+            for (int i = 0; i < events.length(); i++) {
+                JSONObject match = events.getJSONObject(i);
+                JSONObject homeTeam = match.getJSONObject("homeTeam");
+                JSONObject awayTeam = match.getJSONObject("awayTeam");
+
+                String home = homeTeam.getString("name");
+                String away = awayTeam.getString("name");
+
+                JSONObject homeScoreObj = match.optJSONObject("homeScore");
+                JSONObject awayScoreObj = match.optJSONObject("awayScore");
+
+                int homeScore = -1;
+                int awayScore = -1;
+
+                if (homeScoreObj != null && awayScoreObj != null &&
+                    homeScoreObj.has("current") && awayScoreObj.has("current")) {
+                    homeScore = homeScoreObj.getInt("current");
+                    awayScore = awayScoreObj.getInt("current");
+                }
+
+                Match m = new Match(home, away);
+                m.SetResult(homeScore, awayScore);
+                matches.add(m);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Błąd przy rundzie " + roundNumber);
+            e.printStackTrace();
+        }
+
+        return matches;
+    }
+
 
     // Pobieranie danych z danej rundy i zapisywanie do pliku
     public static void fetchRoundData(int roundNumber, BufferedWriter writer) {
