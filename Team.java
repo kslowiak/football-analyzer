@@ -54,11 +54,11 @@ public class Team {
     }
 
     public int getGoalsScored() {
-        return wins;
+        return goalsScored;
     }
 
     public int getGoalsConceded() {
-        return wins;
+        return goalsConceded;
     }
 
 
