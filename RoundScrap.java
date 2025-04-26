@@ -8,15 +8,16 @@ import java.util.TimeZone;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class RoundScrap {
 
 
-
-
-    public static List<Match> fetchRoundMatches(int roundNumber) {
+    public static List<Match> fetchRoundMatches(int roundNumber, Map<String, Team> teamsByName) {
         List<Match> matches = new ArrayList<>();
         String url = "https://www.sofascore.com/api/v1/unique-tournament/229/season/61452/events/round/" + roundNumber;
 
@@ -39,11 +40,21 @@ public class RoundScrap {
 
             for (int i = 0; i < events.length(); i++) {
                 JSONObject match = events.getJSONObject(i);
-                JSONObject homeTeam = match.getJSONObject("homeTeam");
-                JSONObject awayTeam = match.getJSONObject("awayTeam");
+                JSONObject homeTeamJson = match.getJSONObject("homeTeam");
+                JSONObject awayTeamJson = match.getJSONObject("awayTeam");
 
-                String home = homeTeam.getString("name");
-                String away = awayTeam.getString("name");
+                String homeName = homeTeamJson.getString("name");
+                String awayName = awayTeamJson.getString("name");
+
+                // Pobieramy obiekty Team z mapy
+                Team homeTeam = teamsByName.get(homeName);
+                Team awayTeam = teamsByName.get(awayName);
+
+                // Jeśli którejś drużyny nie ma, pomiń mecz
+                if (homeTeam == null || awayTeam == null) {
+                    System.out.println("⚠️ Drużyna nie znaleziona w mapie: " + homeName + " vs " + awayName);
+                    continue;
+                }
 
                 JSONObject homeScoreObj = match.optJSONObject("homeScore");
                 JSONObject awayScoreObj = match.optJSONObject("awayScore");
@@ -57,8 +68,10 @@ public class RoundScrap {
                     awayScore = awayScoreObj.getInt("current");
                 }
 
-                Match m = new Match(home, away);
-                m.SetResult(homeScore, awayScore);
+                Match m = new Match(homeTeam, awayTeam);
+                if (homeScore >= 0 && awayScore >= 0) {
+                    m.SetResult(homeScore, awayScore);
+                }
                 matches.add(m);
             }
 
@@ -69,6 +82,7 @@ public class RoundScrap {
 
         return matches;
     }
+
 
 
     // Pobieranie danych z danej rundy i zapisywanie do pliku

@@ -5,6 +5,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -74,4 +78,31 @@ public class SofaScoreScraper {
 
         return teams;
     }
+
+    public static void saveTeamsToCSV(List<Team> teams, String fileName) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            writer.write("Drużyna;Zwycięstwa;Remisy;Porażki;Bramki zdobyte;Bramki stracone\n");
+
+            for (Team team : teams) {
+                writer.write(team.getName() + ";" +
+                            team.getWins() + ";" +
+                            team.getDraws() + ";" +
+                            team.getLosses() + ";" +
+                            team.getGoalsScored() + ";" +
+                            team.getGoalsConceded() + "\n");
+            }
+
+            System.out.println("Zapisano dane do pliku: " + fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Pobiera i zapisuje statystyki total/home/away do osobnych plików
+    public static void saveAllStandingsToCSV(List<Team> total, List<Team> home, List<Team> away) {
+        saveTeamsToCSV(total, "standings_total.csv");
+        saveTeamsToCSV(home, "standings_home.csv");
+        saveTeamsToCSV(away, "standings_away.csv");
+    }
+
 }

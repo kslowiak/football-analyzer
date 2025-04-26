@@ -28,6 +28,19 @@ public class Team {
         }
     }
 
+
+    public int getDraws() {
+        return draws;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+
+    public int getLosses() {
+        return losses;
+    }
+
     public int getPoints() {
         return wins * 3 + draws;
     }
@@ -39,6 +52,15 @@ public class Team {
     public String getName() {
         return name;
     }
+
+    public int getGoalsScored() {
+        return wins;
+    }
+
+    public int getGoalsConceded() {
+        return wins;
+    }
+
 
     public Void setWin() {
         this.wins++;

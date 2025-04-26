@@ -1,12 +1,14 @@
 public class Match {
-    private String team1;
-    private String team2;
+    private Team team1;
+    private Team team2;
     private int t1goals;
     private int t2goals;
 
     public Match(Team team1, Team team2, int t1goals, int t2goals) {
         this.t1goals = t1goals;
         this.t2goals = t2goals;
+        this.team1 = team1;
+        this.team2 = team2;
 
         if (t1goals > t2goals) {
             team1.setWin();
@@ -21,7 +23,7 @@ public class Match {
 
     }
 
-    public Match(String team1, String team2) {
+    public Match(Team team1, Team team2) {
         this.team1 = team1;
         this.team2 = team2;
     }
@@ -29,7 +31,7 @@ public class Match {
     public void SetResult(int t1goals, int t2goals) {
         this.t1goals = t1goals;
         this.t2goals = t2goals;
-        
+
         if (t1goals > t2goals) {
             team1.setWin();
             team2.setLoss();
@@ -50,11 +52,11 @@ public class Match {
         return t2goals;
     }
 
-    public String getTeam1Name() {
+    public Team getTeam1Name() {
         return team1;
     }
 
-    public String getTeam2Name() {
+    public Team getTeam2Name() {
         return team2;
     }
 
