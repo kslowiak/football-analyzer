@@ -14,6 +14,10 @@ import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
+import java.time.Instant;
+import java.time.ZoneId;
+
 public class RoundScrap {
 
 
@@ -68,11 +72,19 @@ public class RoundScrap {
                     awayScore = awayScoreObj.getInt("current");
                 }
 
-                Match m = new Match(homeTeam, awayTeam);
+                long startTimestamp = match.getLong("startTimestamp") * 1000L;
+                LocalDate matchDate = Instant.ofEpochMilli(startTimestamp)
+                                            .atZone(ZoneId.of("Europe/Warsaw"))
+                                            .toLocalDate();
+
+                Match m;
                 if (homeScore >= 0 && awayScore >= 0) {
-                    m.SetResult(homeScore, awayScore);
+                    m = new Match(homeTeam, awayTeam, homeScore, awayScore, matchDate);
+                } else {
+                    m = new Match(homeTeam, awayTeam, matchDate);
                 }
                 matches.add(m);
+
             }
 
         } catch (Exception e) {

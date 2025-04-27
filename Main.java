@@ -36,5 +36,10 @@ public class Main {
         System.out.println("Liczba meczów: " + allMatches.size());
 
         SofaScoreScraper.saveAllStandingsToCSV(total, home, away);
+
+        MatchPredictor predictor = new MatchPredictor(allMatches, teamsByName);
+        predictor.predictAndSaveResults("predicted_matches.csv", "predicted_standings.csv");
+
+
     }
 }

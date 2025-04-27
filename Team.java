@@ -82,6 +82,14 @@ public class Team {
         this.goalsConceded += goalsAgainst;
     }
 
+    public void resetStats() {
+        this.wins = 0;
+        this.draws = 0;
+        this.losses = 0;
+        this.goalsScored = 0;
+        this.goalsConceded = 0;
+    }
+
 
     public void printStats() {
         System.out.println(name + " | Pts: " + getPoints() + " | Matches: " + getMatches() +
