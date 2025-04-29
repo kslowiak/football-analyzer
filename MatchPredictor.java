@@ -23,7 +23,7 @@ public class MatchPredictor {
         Random random = new Random();
         for (Match match : simulatedMatches) {
             if ((match.getTeam1Goals() == -1 || match.getTeam2Goals() == -1)
-                    && match.getDate().isAfter(LocalDate.now())) {
+                    && !match.getDate().isBefore(LocalDate.now())) {
                 Team homeTeam = simulatedTeams.get(match.getTeam1().getName());
                 Team awayTeam = simulatedTeams.get(match.getTeam2().getName());
 
